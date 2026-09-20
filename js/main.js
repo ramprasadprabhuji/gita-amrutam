@@ -34,16 +34,12 @@ function renderHeader(activePage){
           <div class="brand-sub">Bhagavad Gita for a Meaningful Life</div>
         </div>
       </a>
+      <ul class="menu">${menuHtml}</ul>
       <div class="search-box">
         <span>🔍</span>
-        <input type="text" placeholder="శోధించండి (ఉదా. 2.47)">
+        <input type="text" placeholder="శోధించండి">
       </div>
     </div>
-    <nav class="navbar-menu">
-      <div class="container">
-        <ul class="menu">${menuHtml}</ul>
-      </div>
-    </nav>
   </header>`;
 }
 
