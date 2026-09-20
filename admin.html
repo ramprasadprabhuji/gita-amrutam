@@ -76,22 +76,27 @@
   </div>
 
   <div class="field">
+    <label>Transliteration (ఐచ్ఛికం, ప్రతి పంక్తి కొత్త లైన్‌లో)</label>
+    <textarea id="f-translit" rows="3" placeholder="dhṛtarāṣṭra uvāca |&#10;dharmakṣetre kurukṣetre..."></textarea>
+  </div>
+
+  <div class="field">
     <label>పదచ్ఛేదం</label>
     <textarea id="f-padachedanam" rows="3"></textarea>
   </div>
 
   <div class="field">
-    <label>ప్రతిపదార్థం (పదం — అర్థం; పదం — అర్థం; ఇలా రాయండి)</label>
-    <textarea id="f-pratipadartham" rows="4" placeholder="ధృతరాష్ట్ర ఉవాచ — ధృతరాష్ట్రుడు పలికెను; ధర్మ-క్షేత్రే — ధర్మభూమి యందు; ..."></textarea>
+    <label>ప్రతిపదార్థం — ఒక్కో పదానికి ఒక లైన్, ఇలా రాయండి: <code>పదం | పద విభజన | అర్థం</code></label>
+    <textarea id="f-pratipadartham" rows="6" placeholder="ధర్మక్షేత్రే | ధర్మ + క్షేత్రే | ధర్మభూమి యందు&#10;కురుక్షేత్రే | కురు + క్షేత్రే | కురుక్షేత్రమునందు&#10;సంజయ | సంజయ | ఓ సంజయా!"></textarea>
   </div>
 
   <div class="field">
-    <label>అనువాదం</label>
+    <label>సరళ భావం (Simple Meaning)</label>
     <textarea id="f-translation" rows="3"></textarea>
   </div>
 
   <div class="field">
-    <label>వ్యాఖ్యానం (పేరాగ్రాఫుల మధ్య ఖాళీ లైన్ వదలండి)</label>
+    <label>వివరణాత్మక భావం (Detailed Explanation) — పేరాగ్రాఫుల మధ్య ఖాళీ లైన్ వదలండి</label>
     <textarea id="f-commentary" rows="8"></textarea>
   </div>
 
@@ -149,8 +154,10 @@
     document.getElementById("f-verse-num").value = vNum;
     document.getElementById("f-speaker").value = v ? (v.speaker||"") : "";
     document.getElementById("f-sanskrit").value = v ? v.sanskrit.join("\n") : "";
+    document.getElementById("f-translit").value = v && v.transliteration ? v.transliteration.join("\n") : "";
     document.getElementById("f-padachedanam").value = v ? v.padachedanam : "";
-    document.getElementById("f-pratipadartham").value = v ? v.pratipadartham : "";
+    document.getElementById("f-pratipadartham").value = v && v.pratipadartham
+      ? v.pratipadartham.map(r => `${r.word} | ${r.breakdown} | ${r.meaning}`).join("\n") : "";
     document.getElementById("f-translation").value = v ? v.translation : "";
     document.getElementById("f-commentary").value = v ? v.commentary.join("\n\n") : "";
   }
@@ -160,6 +167,7 @@
     document.getElementById("f-verse-num").value = "";
     document.getElementById("f-speaker").value = "";
     document.getElementById("f-sanskrit").value = "";
+    document.getElementById("f-translit").value = "";
     document.getElementById("f-padachedanam").value = "";
     document.getElementById("f-pratipadartham").value = "";
     document.getElementById("f-translation").value = "";
@@ -170,6 +178,12 @@
     const chNum = Number(document.getElementById("admin-chapter").value);
     const vNum = Number(document.getElementById("f-verse-num").value);
     if(!vNum){ alert("శ్లోకం సంఖ్య నమోదు చేయండి."); return null; }
+    const pratipadaLines = document.getElementById("f-pratipadartham").value.split("\n").map(s=>s.trim()).filter(Boolean);
+    const pratipadartham = pratipadaLines.map(line => {
+      const parts = line.split("|").map(p=>p.trim());
+      return { word: parts[0]||"", breakdown: parts[1]||"", meaning: parts[2]||"" };
+    });
+    const translitLines = document.getElementById("f-translit").value.split("\n").map(s=>s.trim()).filter(Boolean);
     return {
       key: chNum + "-" + vNum,
       obj: {
@@ -177,8 +191,9 @@
         verse: vNum,
         speaker: document.getElementById("f-speaker").value.trim(),
         sanskrit: document.getElementById("f-sanskrit").value.split("\n").map(s=>s.trim()).filter(Boolean),
+        transliteration: translitLines,
         padachedanam: document.getElementById("f-padachedanam").value.trim(),
-        pratipadartham: document.getElementById("f-pratipadartham").value.trim(),
+        pratipadartham: pratipadartham,
         translation: document.getElementById("f-translation").value.trim(),
         commentary: document.getElementById("f-commentary").value.split("\n\n").map(s=>s.trim()).filter(Boolean)
       }

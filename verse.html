@@ -11,15 +11,26 @@
 
 <div id="site-header"></div>
 
+<div id="chapter-banner" class="chapter-banner"></div>
+
 <div class="container">
   <div class="verse-layout">
     <div class="verse-main" id="verse-root"></div>
     <aside class="sidebar">
-      <div id="side-chapter"></div>
-      <h5>ఏ శ్లోకానికైనా వెళ్లండి</h5>
+      <div class="side-progress-card" id="side-chapter"></div>
+      <h5>ఏ శ్లోకానికైనా వెళ్లండి <span class="h5-en">(All Verses)</span></h5>
       <div class="jump-grid" id="jump-grid"></div>
       <h5>అధ్యాయం మార్చండి</h5>
       <select class="chapter-select" id="chapter-select"></select>
+
+      <div class="sidebar-actions">
+        <button class="side-action-btn" onclick="sidebarComingSoon()">♡ Add to Favorites</button>
+        <button class="side-action-btn" onclick="sidebarShare()">↗ Share This Verse</button>
+        <button class="side-action-btn" onclick="sidebarPrint()">🖨 Print / PDF</button>
+        <button class="side-action-btn" onclick="sidebarComingSoon()">🎧 Listen (Audio)</button>
+      </div>
+
+      <div class="side-quote-box" id="side-quote"></div>
     </aside>
   </div>
 </div>

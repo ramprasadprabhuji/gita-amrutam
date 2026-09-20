@@ -168,6 +168,30 @@ function renderChapterDetail(){
 }
 
 // ===================== Verse detail (verse.html) =====================
+const SIDEBAR_QUOTES = [
+  "ప్రశ్నలు బలహీనతకు గుర్తు కాదు; అవి జ్ఞానానికి ద్వారం.",
+  "సందేహం నుండే స్పష్టత మొదలవుతుంది, కృష్ణుని వైపు తిరిగినప్పుడు.",
+  "కర్మ చేయడంలోనే మన అధికారం, ఫలితంలో కాదు."
+];
+
+function renderChapterBanner(targetId, chapter){
+  const el = document.getElementById(targetId);
+  if(!el) return;
+  const quote = "సందేహం నుండే స్పష్టత మొదలవుతుంది, కృష్ణుని వైపు తిరిగినప్పుడు.";
+  el.innerHTML = `
+    <div class="chbanner-crumb container">
+      <a href="index.html">హోమ్</a> / <a href="chapters.html">18 అధ్యాయాలు</a> / <a href="chapter.html?ch=${chapter.n}">అధ్యాయం ${chapter.n}</a>
+    </div>
+    <div class="chbanner-inner container">
+      <div class="chbanner-left">
+        <span class="chbanner-badge">అధ్యాయం ${chapter.n}</span>
+        <h1>${chapter.te}</h1>
+        <div class="chbanner-sub">${chapter.sa}</div>
+      </div>
+      <div class="chbanner-quote">“${quote}”</div>
+    </div>`;
+}
+
 function renderVerseDetail(){
   const params = new URLSearchParams(window.location.search);
   const chNum = Number(params.get("ch")) || 1;
@@ -177,6 +201,8 @@ function renderVerseDetail(){
   const root = document.getElementById("verse-root");
 
   if(!chapter){ root.innerHTML = "<p class='empty-note'>అధ్యాయం కనబడలేదు.</p>"; return; }
+
+  renderChapterBanner("chapter-banner", chapter);
 
   if(!verse){
     root.innerHTML = `<div class="empty-note">
@@ -190,45 +216,56 @@ function renderVerseDetail(){
 
   document.title = `భగవద్గీత ${chNum}.${vNum} — గీతా అమృతం`;
 
-  const nextExists = getVerse(chNum, vNum+1) || vNum < chapter.verses;
   const prevExists = vNum > 1;
+  const pratipadaRows = (verse.pratipadartham || []).map(r => `
+    <tr><td class="pp-word">${r.word}</td><td class="pp-break">${r.breakdown}</td><td class="pp-mean">${r.meaning}</td></tr>
+  `).join("");
 
   root.innerHTML = `
     <div class="verse-nav-row">
       <a href="chapter.html?ch=${chNum}">← అధ్యాయం ${chNum}</a>
+      <span class="verse-nav-title">శ్లోకం ${vNum}</span>
       ${vNum < chapter.verses ? `<a href="verse.html?ch=${chNum}&v=${vNum+1}">తదుపరి »</a>` : `<span></span>`}
     </div>
-    <div class="verse-title">
-      <h1>భగవద్గీత: అధ్యాయం ${chNum}, శ్లోకం ${vNum}</h1>
-    </div>
-    ${verse.speaker ? `<div class="speaker-line">${verse.speaker} ।</div>` : ""}
-    <div class="sanskrit-card">
-      ${verse.sanskrit.map(line => `<div class="line">${line}</div>`).join("")}
+
+    <div class="mula-sloka-card">
+      <div class="mula-sloka-tag">మూల శ్లోకం<br><span>(Original Sloka)</span></div>
+      <div class="mula-sloka-body">
+        ${verse.speaker ? `<div class="speaker-line">${verse.speaker} ।</div>` : ""}
+        <div class="sanskrit-lines">
+          ${verse.sanskrit.map(line => `<div class="line">${line}</div>`).join("")}
+        </div>
+        ${verse.transliteration ? `<div class="translit-lines">${verse.transliteration.map(l=>`<div>${l}</div>`).join("")}</div>` : ""}
+      </div>
     </div>
 
     <div class="verse-section">
-      <h4>పదచ్ఛేదం</h4>
-      <p>${verse.padachedanam}</p>
-    </div>
-
-    <div class="verse-section pratipadartham">
-      <h4>ప్రతిపదార్థం</h4>
-      <p>${verse.pratipadartham.replace(/([^;—]+)(—)/g, "<b>$1</b>$2")}</p>
+      <h4>📖 పదచ్ఛేదం <span class="h4-en">(Pada Chedanam)</span></h4>
+      <p class="padachedanam-text">${verse.padachedanam}</p>
     </div>
 
     <div class="verse-section">
-      <h4>అనువాదం</h4>
+      <h4>📝 ప్రతిపదార్థం <span class="h4-en">(Word-by-Word Meaning)</span></h4>
+      <table class="pratipadartham-table">
+        <thead><tr><th>పదము</th><th>పదార్థము</th><th>తెలుగులో అర్థం</th></tr></thead>
+        <tbody>${pratipadaRows}</tbody>
+      </table>
+    </div>
+
+    <div class="verse-section">
+      <h4>📄 సరళ భావం <span class="h4-en">(Simple Meaning)</span></h4>
       <div class="translation-box">${verse.translation}</div>
     </div>
 
     <div class="verse-section commentary">
-      <h4>వ్యాఖ్యానం</h4>
+      <h4>📘 వివరణాత్మక భావం <span class="h4-en">(Detailed Explanation)</span></h4>
       ${verse.commentary.map(p => `<p>${p}</p>`).join("")}
     </div>
 
     <div class="verse-bottom-nav">
-      <a class="btn btn-outline" href="${prevExists ? `verse.html?ch=${chNum}&v=${vNum-1}` : `chapter.html?ch=${chNum}`}">« మునుపటి శ్లోకం</a>
-      <a class="btn btn-maroon" href="${vNum < chapter.verses ? `verse.html?ch=${chNum}&v=${vNum+1}` : `chapter.html?ch=${chNum}`}">తదుపరి శ్లోకం »</a>
+      <a class="btn btn-outline" href="${prevExists ? `verse.html?ch=${chNum}&v=${vNum-1}` : `chapter.html?ch=${chNum}`}">← Previous Sloka</a>
+      <a class="btn btn-gold" href="chapter.html?ch=${chNum}">Back to Chapter</a>
+      <a class="btn btn-maroon" href="${vNum < chapter.verses ? `verse.html?ch=${chNum}&v=${vNum+1}` : `chapter.html?ch=${chNum}`}">Next Sloka →</a>
     </div>
   `;
 
@@ -236,11 +273,17 @@ function renderVerseDetail(){
 }
 
 function renderSidebar(chapter, currentVerse){
+  const existingCount = versesForChapter(chapter.n).length;
+  const pct = Math.round((existingCount / chapter.verses) * 100);
+
   document.getElementById("side-chapter").innerHTML = `
     <a class="side-chapter-card" href="chapter.html?ch=${chapter.n}">
       <span class="num">${String(chapter.n).padStart(2,'0')}</span>
       <div><h4>${chapter.te}</h4><div style="font-size:.78rem;color:var(--ink-soft);">${chapter.sa}</div></div>
-    </a>`;
+    </a>
+    <div class="progress-label">📖 Chapter Progress</div>
+    <div class="progress-count">అధ్యాయం ${chapter.n} : ${existingCount} / ${chapter.verses}</div>
+    <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>`;
 
   let grid = "";
   for(let i=1;i<=chapter.verses;i++){
@@ -256,4 +299,15 @@ function renderSidebar(chapter, currentVerse){
   select.innerHTML = CHAPTERS.map(c =>
     `<option value="${c.n}" ${c.n===chapter.n?"selected":""}>${c.n}. ${c.te}</option>`).join("");
   select.onchange = (e) => { window.location.href = `chapter.html?ch=${e.target.value}`; };
+
+  const quote = SIDEBAR_QUOTES[(chapter.n + currentVerse) % SIDEBAR_QUOTES.length];
+  document.getElementById("side-quote").textContent = "“" + quote + "”";
 }
+
+function sidebarPrint(){ window.print(); }
+function sidebarShare(){
+  const url = window.location.href;
+  if(navigator.share){ navigator.share({title:document.title, url}); }
+  else { navigator.clipboard.writeText(url); alert("లింక్ కాపీ అయ్యింది!"); }
+}
+function sidebarComingSoon(){ alert("ఈ ఫీచర్ త్వరలో అందుబాటులోకి వస్తుంది 🙏"); }
