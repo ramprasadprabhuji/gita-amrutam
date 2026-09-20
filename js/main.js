@@ -280,10 +280,13 @@ function renderSidebar(chapter, currentVerse){
     <a class="side-chapter-card" href="chapter.html?ch=${chapter.n}">
       <span class="num">${String(chapter.n).padStart(2,'0')}</span>
       <div><h4>${chapter.te}</h4><div style="font-size:.78rem;color:var(--ink-soft);">${chapter.sa}</div></div>
-    </a>
-    <div class="progress-label">📖 Chapter Progress</div>
+    </a>`;
+
+  document.getElementById("progress-body").innerHTML = `
     <div class="progress-count">అధ్యాయం ${chapter.n} : ${existingCount} / ${chapter.verses}</div>
     <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>`;
+
+  document.getElementById("verses-panel-title").textContent = `🗂 All Verses (1 – ${chapter.verses})`;
 
   let grid = "";
   for(let i=1;i<=chapter.verses;i++){

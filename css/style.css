@@ -301,14 +301,6 @@ footer li a:hover{color:var(--gold-light);}
 .side-chapter-card .num{font-family:'Ramabhadra',serif;color:var(--maroon);font-size:1.4rem;}
 .side-chapter-card div h4{font-size:1rem;}
 .sidebar h5{color:var(--maroon);margin-bottom:12px;font-size:1rem;}
-.jump-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:10px;}
-.jump-num{
-  display:flex;align-items:center;justify-content:center;aspect-ratio:1;border-radius:8px;
-  border:1px solid var(--border-soft);font-size:0.85rem;font-weight:700;color:var(--maroon);background:#fff;
-}
-.jump-num:hover{border-color:var(--gold);}
-.jump-num.current{background:var(--maroon);color:#fff;border-color:var(--maroon);}
-.jump-num.disabled{color:#c9c2ae;background:#f7f3e8;pointer-events:none;}
 .chapter-select{width:100%;padding:10px;border-radius:8px;border:1px solid var(--border-soft);font-family:inherit;}
 
 /* ---------- Chapter banner (used on verse page, reference-design style) ---------- */
@@ -353,12 +345,32 @@ footer li a:hover{color:var(--gold-light);}
 @media(max-width:640px){.pratipadartham-table{font-size:0.8rem;} .pratipadartham-table th, .pratipadartham-table td{padding:8px;}}
 
 /* ---------- Sidebar: progress bar, actions, quote ---------- */
-.side-progress-card{background:#fff;border:1px solid var(--border-soft);border-radius:var(--radius);padding:16px;margin-bottom:22px;}
-.progress-label{font-size:0.82rem;color:var(--maroon);font-weight:700;margin-top:12px;}
-.progress-count{font-size:0.8rem;color:var(--ink-soft);margin:4px 0 8px;}
-.progress-track{background:var(--cream-2);border-radius:999px;height:8px;overflow:hidden;}
+.side-chapter-wrap{margin-bottom:20px;}
+.royal-panel{
+  border:2px solid var(--gold);border-radius:14px;overflow:hidden;margin-bottom:20px;
+  box-shadow:0 4px 14px rgba(74,14,23,.18);
+}
+.royal-panel-header{
+  background:linear-gradient(135deg,var(--maroon-dark),var(--maroon));
+  color:var(--gold-light);font-weight:700;font-size:0.95rem;text-align:center;
+  padding:12px 14px;border-bottom:2px solid var(--gold);
+  font-family:'Mallanna','Hind Guntur',sans-serif;
+}
+.royal-panel-body{background:linear-gradient(180deg,#fffaf0,#fbf0d4);padding:16px;}
+.progress-count{font-size:0.85rem;color:var(--maroon-dark);font-weight:600;text-align:center;margin-bottom:10px;}
+.progress-track{background:#fff;border:1px solid var(--gold);border-radius:999px;height:10px;overflow:hidden;}
 .progress-fill{background:linear-gradient(90deg,var(--gold),var(--gold-light));height:100%;border-radius:999px;}
-.h5-en{font-size:0.72rem;font-weight:400;color:var(--ink-soft);}
+.jump-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
+.jump-num{
+  display:flex;align-items:center;justify-content:center;aspect-ratio:1;border-radius:8px;
+  border:1.5px solid var(--gold);font-size:0.88rem;font-weight:700;color:var(--maroon-dark);
+  background:linear-gradient(180deg,#fef6e0,#f8e8bd);
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+  transition:transform .12s;
+}
+.jump-num:hover{transform:translateY(-1px);border-color:var(--maroon);}
+.jump-num.current{background:linear-gradient(180deg,var(--maroon-dark),var(--maroon));color:#fff;border-color:var(--gold-light);}
+.jump-num.disabled{background:#f2ece0;color:#c4bca7;border-color:#e6d9b6;box-shadow:none;}
 .sidebar-actions{display:flex;flex-direction:column;gap:8px;margin:22px 0;}
 .side-action-btn{
   display:flex;align-items:center;gap:8px;width:100%;text-align:left;
