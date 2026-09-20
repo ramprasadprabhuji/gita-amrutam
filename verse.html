@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>శ్లోకం — గీతా అమృతం</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="site-header"></div>
+
+<div class="container">
+  <div class="verse-layout">
+    <div class="verse-main" id="verse-root"></div>
+    <aside class="sidebar">
+      <div id="side-chapter"></div>
+      <h5>ఏ శ్లోకానికైనా వెళ్లండి</h5>
+      <div class="jump-grid" id="jump-grid"></div>
+      <h5>అధ్యాయం మార్చండి</h5>
+      <select class="chapter-select" id="chapter-select"></select>
+    </aside>
+  </div>
+</div>
+
+<div id="site-footer"></div>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+  mountLayout("chapters");
+  renderVerseDetail();
+</script>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>శ్లోక నిర్వహణ — Admin</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .admin-wrap{max-width:820px;margin:0 auto;padding:50px 24px 90px;}
+  .admin-wrap h1{color:var(--maroon);font-size:1.8rem;}
+  .admin-wrap .sub{color:var(--gold);font-style:italic;margin-bottom:30px;}
+  .field{margin-bottom:20px;}
+  .field label{display:block;font-weight:700;color:var(--ink);margin-bottom:6px;font-size:0.92rem;}
+  .field input, .field select, .field textarea{
+    width:100%;padding:10px 12px;border:1px solid var(--border-soft);border-radius:8px;
+    font-family:inherit;font-size:0.95rem;background:#fff;
+  }
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .progress-box{border:1px solid var(--border-soft);border-radius:8px;padding:12px 16px;margin:22px 0;color:var(--ink-soft);}
+  .existing-list{font-size:0.9rem;color:var(--ink-soft);margin-bottom:30px;}
+  .existing-list a{color:var(--maroon);font-weight:700;margin-right:10px;}
+  .code-out{width:100%;min-height:160px;font-family:monospace;font-size:0.82rem;margin-top:14px;}
+  .btn-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px;}
+  .hint{font-size:0.82rem;color:var(--ink-soft);margin-top:6px;}
+</style>
+</head>
+<body>
+
+<div id="site-header"></div>
+
+<div class="page-header">
+  <div class="container">
+    <div class="crumb"><a href="index.html">హోమ్</a> / Admin</div>
+    <h1 style="color:var(--gold-light);">శ్లోక నిర్వహణ</h1>
+    <p>Verse Management · Admin</p>
+  </div>
+</div>
+
+<div class="admin-wrap">
+
+  <div class="row2">
+    <div class="field">
+      <label>అధ్యాయం ఎంచుకోండి</label>
+      <select id="admin-chapter"></select>
+    </div>
+    <div class="field">
+      <label>శ్లోకం ఎంచుకోండి</label>
+      <select id="admin-verse"></select>
+    </div>
+  </div>
+
+  <div class="progress-box" id="admin-progress"></div>
+
+  <div class="field">
+    <label>ఈ అధ్యాయంలో నమోదైన శ్లోకాలు</label>
+    <div class="existing-list" id="admin-existing">ఇంకా శ్లోకాలు నమోదు కాలేదు.</div>
+  </div>
+
+  <hr style="border:none;border-top:1px solid var(--border-soft);margin:26px 0;">
+
+  <div class="row2">
+    <div class="field">
+      <label>శ్లోకం సంఖ్య</label>
+      <input type="number" id="f-verse-num" min="1">
+    </div>
+    <div class="field">
+      <label>వక్త (ఐచ్ఛికం)</label>
+      <input type="text" id="f-speaker" placeholder="ఉదా. ధృతరాష్ట్ర ఉవాచ">
+    </div>
+  </div>
+
+  <div class="field">
+    <label>సంస్కృత శ్లోకం (ప్రతి పంక్తి కొత్త లైన్‌లో రాయండి)</label>
+    <textarea id="f-sanskrit" rows="4" placeholder="ధృతరాష్ట్ర ఉవాచ ।&#10;ధర్మక్షేత్రే కురుక్షేత్రే సమవేతా యుయుత్సవః ।&#10;మామకాః పాండవాశ్చైవ కిమకుర్వత సంజయ ।। 1 ।।"></textarea>
+  </div>
+
+  <div class="field">
+    <label>పదచ్ఛేదం</label>
+    <textarea id="f-padachedanam" rows="3"></textarea>
+  </div>
+
+  <div class="field">
+    <label>ప్రతిపదార్థం (పదం — అర్థం; పదం — అర్థం; ఇలా రాయండి)</label>
+    <textarea id="f-pratipadartham" rows="4" placeholder="ధృతరాష్ట్ర ఉవాచ — ధృతరాష్ట్రుడు పలికెను; ధర్మ-క్షేత్రే — ధర్మభూమి యందు; ..."></textarea>
+  </div>
+
+  <div class="field">
+    <label>అనువాదం</label>
+    <textarea id="f-translation" rows="3"></textarea>
+  </div>
+
+  <div class="field">
+    <label>వ్యాఖ్యానం (పేరాగ్రాఫుల మధ్య ఖాళీ లైన్ వదలండి)</label>
+    <textarea id="f-commentary" rows="8"></textarea>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-maroon" onclick="saveDraft()">సేవ్ చేయండి (ఈ బ్రౌజర్‌లో ప్రివ్యూ)</button>
+    <button class="btn btn-outline" onclick="clearForm()">రద్దు చేయండి</button>
+    <button class="btn btn-gold" onclick="exportCode()">కోడ్ ఎక్స్‌పోర్ట్ చేయండి</button>
+  </div>
+  <p class="hint">"సేవ్ చేయండి" ఈ బ్రౌజర్‌లో మాత్రమే వెంటనే ప్రివ్యూ చూపిస్తుంది. అందరికీ శాశ్వతంగా కనిపించాలంటే, "కోడ్ ఎక్స్‌పోర్ట్ చేయండి" నొక్కి వచ్చిన టెక్స్ట్‌ను కాపీ చేసి పంపండి — దాన్ని data.js ఫైల్‌లో శాశ్వతంగా చేరుస్తాం.</p>
+
+  <textarea class="code-out" id="code-output" style="display:none;" readonly></textarea>
+</div>
+
+<div id="site-footer"></div>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+  mountLayout("");
+
+  function populateChapterSelect(){
+    const sel = document.getElementById("admin-chapter");
+    sel.innerHTML = CHAPTERS.map(c => `<option value="${c.n}">${c.n}. ${c.te}</option>`).join("");
+    sel.onchange = onChapterChange;
+    onChapterChange();
+  }
+
+  function onChapterChange(){
+    const chNum = Number(document.getElementById("admin-chapter").value);
+    const chapter = getChapter(chNum);
+    const existing = versesForChapter(chNum);
+
+    document.getElementById("admin-progress").textContent =
+      `${existing.length} / ${chapter.verses} శ్లోకాలు పూర్తయ్యాయి`;
+
+    const vSel = document.getElementById("admin-verse");
+    let opts = `<option value="">— ఎంచుకోండి —</option>`;
+    for(let i=1;i<=chapter.verses;i++){
+      const has = existing.find(v=>v.verse===i);
+      opts += `<option value="${i}">${has?"✓ ":""}శ్లోకం ${i}</option>`;
+    }
+    vSel.innerHTML = opts;
+    vSel.onchange = onVerseChange;
+
+    document.getElementById("admin-existing").innerHTML = existing.length
+      ? existing.map(v => `<a href="verse.html?ch=${chNum}&v=${v.verse}" target="_blank">శ్లోకం ${v.verse}</a>`).join(" ")
+      : "ఇంకా శ్లోకాలు నమోదు కాలేదు.";
+  }
+
+  function onVerseChange(){
+    const chNum = Number(document.getElementById("admin-chapter").value);
+    const vNum = Number(document.getElementById("admin-verse").value);
+    if(!vNum) { clearForm(false); return; }
+    const v = getVerse(chNum, vNum);
+    document.getElementById("f-verse-num").value = vNum;
+    document.getElementById("f-speaker").value = v ? (v.speaker||"") : "";
+    document.getElementById("f-sanskrit").value = v ? v.sanskrit.join("\n") : "";
+    document.getElementById("f-padachedanam").value = v ? v.padachedanam : "";
+    document.getElementById("f-pratipadartham").value = v ? v.pratipadartham : "";
+    document.getElementById("f-translation").value = v ? v.translation : "";
+    document.getElementById("f-commentary").value = v ? v.commentary.join("\n\n") : "";
+  }
+
+  function clearForm(resetVerseSelect=true){
+    if(resetVerseSelect) document.getElementById("admin-verse").value = "";
+    document.getElementById("f-verse-num").value = "";
+    document.getElementById("f-speaker").value = "";
+    document.getElementById("f-sanskrit").value = "";
+    document.getElementById("f-padachedanam").value = "";
+    document.getElementById("f-pratipadartham").value = "";
+    document.getElementById("f-translation").value = "";
+    document.getElementById("f-commentary").value = "";
+  }
+
+  function buildVerseObject(){
+    const chNum = Number(document.getElementById("admin-chapter").value);
+    const vNum = Number(document.getElementById("f-verse-num").value);
+    if(!vNum){ alert("శ్లోకం సంఖ్య నమోదు చేయండి."); return null; }
+    return {
+      key: chNum + "-" + vNum,
+      obj: {
+        chapter: chNum,
+        verse: vNum,
+        speaker: document.getElementById("f-speaker").value.trim(),
+        sanskrit: document.getElementById("f-sanskrit").value.split("\n").map(s=>s.trim()).filter(Boolean),
+        padachedanam: document.getElementById("f-padachedanam").value.trim(),
+        pratipadartham: document.getElementById("f-pratipadartham").value.trim(),
+        translation: document.getElementById("f-translation").value.trim(),
+        commentary: document.getElementById("f-commentary").value.split("\n\n").map(s=>s.trim()).filter(Boolean)
+      }
+    };
+  }
+
+  function saveDraft(){
+    const built = buildVerseObject();
+    if(!built) return;
+    saveLocalDraft(built.key, built.obj);
+    onChapterChange();
+    if(confirm("ఈ బ్రౌజర్‌లో సేవ్ అయ్యింది! ఇప్పుడు ప్రివ్యూ చూడాలా?")){
+      window.open(`verse.html?ch=${built.obj.chapter}&v=${built.obj.verse}`, "_blank");
+    }
+  }
+
+  function exportCode(){
+    const built = buildVerseObject();
+    if(!built) return;
+    const text = `  "${built.key}": ${JSON.stringify(built.obj, null, 2)},`;
+    const out = document.getElementById("code-output");
+    out.style.display = "block";
+    out.value = text;
+    out.select();
+  }
+
+  populateChapterSelect();
+</script>
+</body>
+</html>
