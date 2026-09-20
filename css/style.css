@@ -64,7 +64,9 @@ img{max-width:100%;display:block;}
 
 /* ---------- Navbar ---------- */
 .navbar{background:var(--cream-2);border-bottom:1px solid var(--border-soft);position:sticky;top:0;z-index:50;}
-.navbar .container{display:flex;align-items:center;justify-content:space-between;padding-top:14px;padding-bottom:14px;gap:24px;}
+.navbar-top{display:flex;align-items:center;justify-content:space-between;padding-top:14px;padding-bottom:14px;gap:24px;}
+.navbar-menu{border-top:1px solid var(--border-soft);background:#fff;}
+.navbar-menu .container{display:flex;justify-content:center;}
 .brand{display:flex;align-items:center;gap:14px;}
 .brand img{
   width:58px;height:58px;border-radius:50%;object-fit:cover;
@@ -82,18 +84,19 @@ img{max-width:100%;display:block;}
   text-shadow:0 1px 0 rgba(201,162,39,.25);
 }
 .brand-sub{font-size:0.8rem;color:var(--gold);font-style:italic;letter-spacing:.03em;margin-top:2px;}
-.menu{display:flex;gap:30px;list-style:none;margin:0;padding:0;flex-wrap:wrap;}
+.menu{display:flex;justify-content:center;gap:26px;list-style:none;margin:0;padding:11px 0;flex-wrap:wrap;}
 .menu a{
   font-family:'Hind Guntur',sans-serif;
-  font-weight:700;font-size:1.05rem;letter-spacing:0.01em;
-  color:var(--maroon-dark);padding-bottom:5px;border-bottom:2px solid transparent;
+  font-weight:700;font-size:0.98rem;letter-spacing:0.01em;
+  color:var(--maroon-dark);padding-bottom:4px;border-bottom:2px solid transparent;
+  white-space:nowrap;
   transition:color .15s,border-color .15s;
 }
 .menu a:hover,.menu a.active{color:var(--gold);border-bottom-color:var(--gold);}
-.search-box{display:flex;align-items:center;gap:8px;border:1px solid var(--border-soft);border-radius:999px;padding:8px 16px;background:#fff;min-width:200px;}
+.search-box{display:flex;align-items:center;gap:8px;border:1px solid var(--border-soft);border-radius:999px;padding:8px 16px;background:#fff;min-width:200px;flex-shrink:0;}
 .search-box input{border:none;outline:none;font-family:inherit;font-size:0.9rem;width:100%;background:transparent;}
 @media(max-width:900px){
-  .menu{display:none;}
+  .navbar-menu{display:none;}
   .search-box{display:none;}
 }
 
