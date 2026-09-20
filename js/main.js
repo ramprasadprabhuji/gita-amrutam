@@ -26,7 +26,7 @@ function renderHeader(activePage){
     </div>
   </div>
   <header class="navbar">
-    <div class="container">
+    <div class="container navbar-top">
       <a href="index.html" class="brand">
         <img src="assets/logo.png" alt="గీతా అమృతం లోగో">
         <div>
@@ -34,12 +34,16 @@ function renderHeader(activePage){
           <div class="brand-sub">Bhagavad Gita for a Meaningful Life</div>
         </div>
       </a>
-      <ul class="menu">${menuHtml}</ul>
       <div class="search-box">
         <span>🔍</span>
         <input type="text" placeholder="శోధించండి (ఉదా. 2.47)">
       </div>
     </div>
+    <nav class="navbar-menu">
+      <div class="container">
+        <ul class="menu">${menuHtml}</ul>
+      </div>
+    </nav>
   </header>`;
 }
 
