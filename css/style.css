@@ -97,11 +97,29 @@ img{max-width:100%;display:block;}
 .menu a:hover,.menu a.active{color:var(--gold);border-bottom-color:var(--gold);}
 .search-box{display:flex;align-items:center;gap:6px;border:1px solid var(--border-soft);border-radius:999px;padding:7px 14px;background:#fff;flex-shrink:0;width:180px;}
 .search-box input{border:none;outline:none;font-family:inherit;font-size:0.85rem;width:100%;background:transparent;min-width:0;}
+.mobile-search-btn,.mobile-menu-btn{
+  display:none;align-items:center;justify-content:center;
+  width:42px;height:42px;border-radius:50%;border:1px solid var(--border-soft);
+  background:#fff;font-size:1.1rem;cursor:pointer;flex-shrink:0;
+}
+.mobile-menu-btn{border-radius:10px;}
+.mobile-menu{display:none;background:#fff;border-top:1px solid var(--border-soft);}
+.mobile-menu.open{display:block;}
+.mobile-menu .menu{
+  display:flex;flex-direction:column;gap:0;overflow:visible;padding:8px 24px 14px;
+}
+.mobile-menu .menu a{
+  display:block;padding:12px 0;border-bottom:1px solid var(--border-soft);
+  border-bottom-width:1px;font-size:1rem;
+}
+.mobile-menu .menu a:last-child{border-bottom:none;}
 @media(max-width:1080px){
   .search-box{display:none;}
+  .mobile-search-btn{display:flex;}
 }
 @media(max-width:820px){
   .menu{display:none;}
+  .mobile-menu-btn{display:flex;}
 }
 
 /* ---------- Hero ---------- */

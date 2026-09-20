@@ -39,8 +39,17 @@ function renderHeader(activePage){
         <span>🔍</span>
         <input type="text" placeholder="శోధించండి">
       </div>
+      <button class="mobile-search-btn" aria-label="శోధించండి">🔍</button>
+      <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="మెనూ">☰</button>
+    </div>
+    <div class="mobile-menu" id="mobile-menu">
+      <ul class="menu">${menuHtml}</ul>
     </div>
   </header>`;
+}
+
+function toggleMobileMenu(){
+  document.getElementById("mobile-menu").classList.toggle("open");
 }
 
 function renderFooter(){
